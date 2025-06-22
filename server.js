@@ -200,7 +200,7 @@ app.post('/api/fb/webhook', express.json(), async (req, res) => {
 
 
 // Start server
-server.listen(port, () => {
-  console.log(`Server is running on port ${port}.`);
-  console.log(`API available at http://localhost:${port}/api`);
-}); 
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
