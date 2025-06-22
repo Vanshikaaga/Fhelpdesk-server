@@ -24,7 +24,8 @@ const allowedOrigins = [
   'https://f-help-desk-hfqh.vercel.app',
   'https://f-help-desk-hfqh-jzzny1q6w-vanshika-agarwals-projects.vercel.app',
   'https://fhelpdesk.vercel.app', // production
-  'https://fhelpdesk.onrender.com' // backend on render
+  'https://fhelpdesk.onrender.com' ,
+    /\.vercel\.app$/,// backend on render
 ];
 
 
@@ -234,15 +235,15 @@ app.post('/api/fb/webhook', express.json(), async (req, res) => {
   }
 });
 
-const path = require('path');
+// const path = require('path');
 
-// Serve static files from the frontend build folder
-app.use(express.static(path.join(__dirname, 'client', 'build')));
+// // Serve static files from the frontend build folder
+// app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-// Catch-all for React routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
+// // Catch-all for React routes
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+// });
 
 // Start server
 const PORT = process.env.PORT || 5000;
