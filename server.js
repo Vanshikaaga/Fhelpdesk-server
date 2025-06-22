@@ -19,12 +19,29 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://f-help-desk-hfqh.vercel.app',
+  'https://f-help-desk-hfqh-jzzny1q6w-vanshika-agarwals-projects.vercel.app' // Vercel preview
+];
+
+
+// Express
 app.use(cors({
-  origin: '*',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+
+
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true
 }));
+
 
 // Log all requests
 app.use((req, res, next) => {
@@ -51,10 +68,18 @@ const server = http.createServer(app);
 // Set up Socket.IO
 const io = socketIo(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true
   }
 });
+
+
 
 // Socket.IO auth middleware
 io.use((socket, next) => {
