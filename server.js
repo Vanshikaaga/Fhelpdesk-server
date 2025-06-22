@@ -234,6 +234,15 @@ app.post('/api/fb/webhook', express.json(), async (req, res) => {
   }
 });
 
+const path = require('path');
+
+// Serve static files from the frontend build folder
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+// Catch-all for React routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
