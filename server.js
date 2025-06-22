@@ -22,25 +22,31 @@ connectDB();
 const allowedOrigins = [
   'http://localhost:3000',
   'https://f-help-desk-hfqh.vercel.app',
-  'https://f-help-desk-hfqh-jzzny1q6w-vanshika-agarwals-projects.vercel.app' // Vercel preview
+  'https://f-help-desk-hfqh-jzzny1q6w-vanshika-agarwals-projects.vercel.app',
+  'https://fhelpdesk.vercel.app', // production
+  'https://fhelpdesk.onrender.com' // backend on render
 ];
 
 
-// Express
+
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      origin.endsWith('.onrender.com')
+    ) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-
-
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true
 }));
+
 
 
 // Log all requests
@@ -69,7 +75,12 @@ const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.onrender.com')
+      ) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
